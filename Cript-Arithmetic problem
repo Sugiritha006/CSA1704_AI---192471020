@@ -1,0 +1,42 @@
+import itertools
+
+def solve_cryptarithmetic():
+    # Puzzle: SEND + MORE = MONEY
+    letters = "SENDMORY"
+    digits = "0123456789"
+
+    for perm in itertools.permutations(digits, len(letters)):
+        assign = dict(zip(letters, perm))
+        
+        # Skip if leading letters are zero
+        if assign['S'] == '0' or assign['M'] == '0':
+            continue
+        
+        # Convert words into numbers
+        send = int("".join(assign[c] for c in "SEND"))
+        more = int("".join(assign[c] for c in "MORE"))
+        money = int("".join(assign[c] for c in "MONEY"))
+
+        if send + more == money:
+            print("Solution found!")
+            for k, v in assign.items():
+                print(k, "=", v)
+            print(f"{send} + {more} = {money}")
+            return
+
+    print("No solution found.")
+
+if __name__ == "__main__":
+    solve_cryptarithmetic()
+o/p
+Solution found!
+S = 9
+E = 5
+N = 6
+D = 7
+M = 1
+O = 0
+R = 8
+Y = 2
+9567 + 1085 = 10652
+
