@@ -1,0 +1,59 @@
+import heapq
+
+def a_star(graph, start, goal, heuristic):
+    # Priority queue: (f, g, node, path)
+    pq = [(0 + heuristic[start], 0, start, [start])]
+    visited = set()
+
+    while pq:
+        f, g, node, path = heapq.heappop(pq)
+
+        if node == goal:
+            return path, g   # path and cost
+
+        if node in visited:
+            continue
+        visited.add(node)
+
+        for neighbor, cost in graph[node]:
+            if neighbor not in visited:
+                g_new = g + cost
+                f_new = g_new + heuristic[neighbor]
+                heapq.heappush(pq, (f_new, g_new, neighbor, path + [neighbor]))
+
+    return None, float("inf")
+
+
+# Example usage
+if __name__ == "__main__":
+    # Graph as adjacency list with weights
+    graph = {
+        'A': [('B', 1), ('C', 3)],
+        'B': [('A', 1), ('D', 3), ('E', 5)],
+        'C': [('A', 3), ('F', 7)],
+        'D': [('B', 3), ('G', 2)],
+        'E': [('B', 5), ('G', 1)],
+        'F': [('C', 7), ('G', 2)],
+        'G': [('D', 2), ('E', 1), ('F', 2)]
+    }
+
+    # Heuristic values (straight-line estimates to goal 'G')
+    heuristic = {
+        'A': 7,
+        'B': 6,
+        'C': 6,
+        'D': 2,
+        'E': 1,
+        'F': 2,
+        'G': 0
+    }
+
+    start = 'A'
+    goal = 'G'
+
+    path, cost = a_star(graph, start, goal, heuristic)
+    print("Shortest path:", path)
+    print("Total cost:", cost)
+o/p
+Shortest path: ['A', 'B', 'E', 'G']
+Total cost: 7
