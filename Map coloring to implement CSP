@@ -1,0 +1,70 @@
+def is_safe(region, color, assignment, neighbors):
+    """
+    Check if it's safe to color 'region' with 'color'
+    """
+    for neighbor in neighbors[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+def map_coloring(regions, colors, neighbors, assignment={}):
+    """
+    Backtracking function to assign colors
+    """
+    # If all regions are assigned
+    if len(assignment) == len(regions):
+        return assignment
+
+    # Select unassigned region
+    for region in regions:
+        if region not in assignment:
+            break
+
+    for color in colors:
+        if is_safe(region, color, assignment, neighbors):
+            assignment[region] = color
+            result = map_coloring(regions, colors, neighbors, assignment)
+            if result:
+                return result
+            # Backtrack
+            del assignment[region]
+
+    return None
+
+
+# Example usage
+if __name__ == "__main__":
+    # Define regions
+    regions = ['WA', 'NT', 'SA', 'Q', 'NSW', 'V', 'T']
+
+    # Define neighbors
+    neighbors = {
+        'WA': ['NT', 'SA'],
+        'NT': ['WA', 'SA', 'Q'],
+        'SA': ['WA', 'NT', 'Q', 'NSW', 'V'],
+        'Q': ['NT', 'SA', 'NSW'],
+        'NSW': ['Q', 'SA', 'V'],
+        'V': ['SA', 'NSW'],
+        'T': []
+    }
+
+    # Available colors
+    colors = ['Red', 'Green', 'Blue']
+
+    solution = map_coloring(regions, colors, neighbors)
+
+    if solution:
+        print("Solution found:")
+        for region, color in solution.items():
+            print(region, ":", color)
+    else:
+        print("No solution exists.")
+o/p
+Solution found:
+WA : Red
+NT : Green
+SA : Blue
+Q : Red
+NSW : Green
+V : Red
+T : Red
