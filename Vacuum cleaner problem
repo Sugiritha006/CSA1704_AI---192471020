@@ -1,0 +1,37 @@
+def vacuum_cleaner_problem():
+    # Initial environment
+    state = {'A': 'Dirty', 'B': 'Dirty'}   # both rooms dirty
+    vacuum_pos = 'A'  # start position
+
+    print("Initial State:", state, "| Vacuum at:", vacuum_pos)
+
+    steps = []
+
+    while state['A'] == 'Dirty' or state['B'] == 'Dirty':
+        if state[vacuum_pos] == 'Dirty':
+            # Clean the current room
+            state[vacuum_pos] = 'Clean'
+            steps.append(f"Cleaned room {vacuum_pos}")
+        else:
+            # Move to the other room
+            vacuum_pos = 'B' if vacuum_pos == 'A' else 'A'
+            steps.append(f"Moved to room {vacuum_pos}")
+
+    print("\nActions Taken:")
+    for step in steps:
+        print(step)
+
+    print("\nFinal State:", state, "| Vacuum at:", vacuum_pos)
+
+
+if __name__ == "__main__":
+    vacuum_cleaner_problem()
+o/p
+Initial State: {'A': 'Dirty', 'B': 'Dirty'} | Vacuum at: A
+
+Actions Taken:
+Cleaned room A
+Moved to room B
+Cleaned room B
+
+Final State: {'A': 'Clean', 'B': 'Clean'} | Vacuum at: B
