@@ -1,0 +1,67 @@
+from collections import deque
+
+def water_jug_bfs(jug1, jug2, target):
+    visited = set()
+    queue = deque()
+    
+    # start state: both jugs empty
+    queue.append((0, 0, []))
+    
+    while queue:
+        x, y, path = queue.popleft()
+        
+        # if target found
+        if x == target or y == target:
+            path.append((x, y))
+            return path
+        
+        if (x, y) in visited:
+            continue
+        visited.add((x, y))
+        
+        # Possible moves:
+        new_states = []
+        # 1. Fill Jug1
+        new_states.append((jug1, y))
+        # 2. Fill Jug2
+        new_states.append((x, jug2))
+        # 3. Empty Jug1
+        new_states.append((0, y))
+        # 4. Empty Jug2
+        new_states.append((x, 0))
+        # 5. Pour Jug1 -> Jug2
+        pour = min(x, jug2 - y)
+        new_states.append((x - pour, y + pour))
+        # 6. Pour Jug2 -> Jug1
+        pour = min(y, jug1 - x)
+        new_states.append((x + pour, y - pour))
+        
+        for state in new_states:
+            queue.append((state[0], state[1], path + [(x, y)]))
+    
+    return None
+
+
+# Example run
+if __name__ == "__main__":
+    jug1_capacity = 4
+    jug2_capacity = 3
+    target = 2
+
+    solution = water_jug_bfs(jug1_capacity, jug2_capacity, target)
+
+    if solution:
+        print("Steps to reach the solution:")
+        for step in solution:
+            print(step)
+    else:
+        print("No solution possible.")
+o/p 
+Steps to reach the solution:
+(0, 0)
+(4, 0)
+(1, 3)
+(1, 0)
+(0, 1)
+(4, 1)
+(2, 3)
