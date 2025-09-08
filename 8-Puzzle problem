@@ -1,0 +1,77 @@
+from collections import deque
+
+# Goal state
+goal_state = [[1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 0]]  # 0 = blank
+
+# Movements: Up, Down, Left, Right
+moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+
+def find_blank(board):
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == 0:
+                return i, j
+
+
+def generate_neighbors(board):
+    neighbors = []
+    x, y = find_blank(board)
+    for dx, dy in moves:
+        new_x, new_y = x + dx, y + dy
+        if 0 <= new_x < 3 and 0 <= new_y < 3:
+            new_board = [row[:] for row in board]
+            new_board[x][y], new_board[new_x][new_y] = new_board[new_x][new_y], new_board[x][y]
+            neighbors.append(new_board)
+    return neighbors
+
+
+def bfs(start_board):
+    queue = deque([(start_board, [])])
+    visited = set()
+
+    while queue:
+        board, path = queue.popleft()
+        if board == goal_state:
+            return path + [board]
+
+        visited.add(tuple(map(tuple, board)))
+
+        for neighbor in generate_neighbors(board):
+            if tuple(map(tuple, neighbor)) not in visited:
+                queue.append((neighbor, path + [board]))
+
+    return None
+
+
+# Example run
+if __name__ == "__main__":
+    start_board = [[1, 2, 3],
+                   [4, 0, 6],
+                   [7, 5, 8]]
+
+    solution = bfs(start_board)
+
+    if solution:
+        print("Solution found in", len(solution) - 1, "moves:")
+        for step in solution:
+            for row in step:
+                print(row)
+            print()
+    else:
+        print("No solution exists!")
+o/p
+Solution found in 2 moves:
+[1, 2, 3]
+[4, 0, 6]
+[7, 5, 8]
+
+[1, 2, 3]
+[4, 5, 6]
+[7, 0, 8]
+
+[1, 2, 3]
+[4, 5, 6]
+[7, 8, 0]
