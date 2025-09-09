@@ -1,0 +1,61 @@
+import math
+
+def alphabeta(state, maximizing, alpha, beta):
+    if state == 0: return -1 if maximizing else 1
+    if maximizing:
+        val = -math.inf
+        for m in [1,2,3]:
+            if state-m>=0:
+                val = max(val, alphabeta(state-m, False, alpha, beta))
+                alpha = max(alpha, val)
+                if beta<=alpha: break
+        return val
+    else:
+        val = math.inf
+        for m in [1,2,3]:
+            if state-m>=0:
+                val = min(val, alphabeta(state-m, True, alpha, beta))
+                beta = min(beta, val)
+                if beta<=alpha: break
+        return val
+
+def best_move(state):
+    best, move = -math.inf, 1
+    for m in [1,2,3]:
+        if state-m>=0:
+            val = alphabeta(state-m, False, -math.inf, math.inf)
+            if val>best: best, move = val, m
+    return move
+
+def play(stones=10):
+    state, player = stones, "Human"
+    print(f"Game start: {stones} stones")
+    while state>0:
+        print(f"\nStones left: {state}")
+        if player=="Human":
+            m=int(input("Take 1-3 stones: "))
+            if m not in [1,2,3] or m>state: continue
+        else:
+            m=best_move(state)
+            print(f"Computer takes: {m}")
+        state -= m
+        if state==0: print(f"{player} wins!"); break
+        player = "Computer" if player=="Human" else "Human"
+
+if __name__=="__main__":
+    play(10)
+o/p
+Game start: 10 stones
+
+Stones left: 10
+Take 1-3 stones: 2
+
+Stones left: 8
+Computer takes: 3
+
+Stones left: 5
+Take 1-3 stones: 2
+
+Stones left: 3
+Computer takes: 3
+Computer wins!
