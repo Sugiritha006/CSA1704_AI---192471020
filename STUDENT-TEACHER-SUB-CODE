@@ -1,0 +1,54 @@
+% Facts: student(Name, SubjectCode)
+student(alex, cs101).
+student(mary, cs101).
+student(john, ma101).
+student(susan, ph101).
+
+% Facts: teacher(Name, SubjectCode)
+teacher(dr_smith, cs101).
+teacher(dr_jones, ma101).
+teacher(dr_white, ph101).
+
+% Facts: subject(SubjectCode, SubjectName)
+subject(cs101, 'Computer Science').
+subject(ma101, 'Mathematics').
+subject(ph101, 'Physics').
+
+% Queries you can make:
+
+% 1. Find the teacher of a student
+% ?- student(Student, Code), teacher(Teacher, Code).
+
+% 2. Find all students of a teacher
+% ?- teacher(Teacher, Code), student(Student, Code).
+
+% 3. Find subject name of a student
+% ?- student(Student, Code), subject(Code, Name).
+
+% 4. Find which students take which subjects
+% ?- student(Student, Code), subject(Code, Name).
+o/p
+?- student(alex, Code), teacher(Teacher, Code).
+Code = cs101,
+Teacher = dr_smith.
+?- teacher(dr_smith, Code), student(Student, Code).
+Code = cs101,
+Student = alex ;
+Code = cs101,
+Student = mary.
+?- student(john, Code), subject(Code, Name).
+Code = ma101,
+Name = 'Mathematics'.
+?- student(Student, Code), subject(Code, Name).
+Student = alex,
+Code = cs101,
+Name = 'Computer Science' ;
+Student = mary,
+Code = cs101,
+Name = 'Computer Science' ;
+Student = john,
+Code = ma101,
+Name = 'Mathematics' ;
+Student = susan,
+Code = ph101,
+Name = 'Physics'.
