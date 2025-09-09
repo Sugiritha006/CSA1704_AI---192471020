@@ -1,0 +1,23 @@
+% Facts: name(Name, DOB)
+% DOB format: dob(Day, Month, Year)
+
+name(john, dob(15, 5, 1990)).
+name(mary, dob(23, 11, 1985)).
+name(alex, dob(1, 1, 2000)).
+name(susan, dob(30, 7, 1995)).
+
+% Query examples:
+
+% Get DOB of a person
+% ?- name(john, DOB).
+
+% Check if someone was born in a specific year
+% ?- name(Person, dob(_, _, 1990)).
+
+% List all people born in a specific month
+% ?- name(Person, dob(_, 5, _)).
+o/p
+?- name(john, DOB).
+DOB = dob(15, 5, 1990).
+?- name(Person, dob(_, 5, _)).
+Person = john.
