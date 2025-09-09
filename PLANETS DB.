@@ -1,0 +1,44 @@
+% Facts: planet(Name, DistanceFromSunInMillionKm, DiameterInKm, Type)
+planet(mercury, 57.9, 4879, terrestrial).
+planet(venus, 108.2, 12104, terrestrial).
+planet(earth, 149.6, 12756, terrestrial).
+planet(mars, 227.9, 6792, terrestrial).
+planet(jupiter, 778.3, 142984, gas_giant).
+planet(saturn, 1427.0, 120536, gas_giant).
+planet(uranus, 2871.0, 51118, ice_giant).
+planet(neptune, 4497.1, 49528, ice_giant).
+planet(pluto, 5906.4, 2370, dwarf).
+
+% Sample Queries:
+
+% 1. Find all terrestrial planets
+% ?- planet(Name, _, _, terrestrial).
+
+% 2. Find the diameter of a planet
+% ?- planet(earth, _, Diameter, _).
+
+% 3. Find planets farther than 1000 million km from Sun
+% ?- planet(Name, Distance, _, _), Distance > 1000.
+
+% 4. Find all gas giants
+% ?- planet(Name, _, _, gas_giant).
+
+% 5. List all planets with their type
+% ?- planet(Name, _, _, Type).
+o/p
+?- planet(Name, _, _, terrestrial).
+Name = mercury ;
+Name = venus ;
+Name = earth ;
+Name = mars.
+?- planet(earth, _, Diameter, _).
+Diameter = 12756.
+?- planet(Name, Distance, _, _), Distance > 1000.
+Name = saturn,
+Distance = 1427.0 ;
+Name = uranus,
+Distance = 2871.0 ;
+Name = neptune,
+Distance = 4497.1 ;
+Name = pluto,
+Distance = 5906.4.
