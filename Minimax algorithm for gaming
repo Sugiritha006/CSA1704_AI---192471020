@@ -1,0 +1,99 @@
+import math
+
+def print_board(b): 
+    for r in b: print(" | ".join(r)); print("-"*9)
+
+def moves_left(b): return any(c==" " for r in b for c in r)
+
+def evaluate(b):
+    lines = b + [[b[i][j] for i in range(3)] for j in range(3)] + [[b[i][i] for i in range(3)], [b[i][2-i] for i in range(3)]]
+    for l in lines:
+        if l[0]==l[1]==l[2]!=" ": return 10 if l[0]=='O' else -10
+    return 0
+
+def minimax(b, is_max):
+    score = evaluate(b)
+    if score or not moves_left(b): return score
+    best = -math.inf if is_max else math.inf
+    for i in range(3):
+        for j in range(3):
+            if b[i][j]==" ":
+                b[i][j] = 'O' if is_max else 'X'
+                val = minimax(b, not is_max)
+                b[i][j] = " "
+                best = max(best, val) if is_max else min(best, val)
+    return best
+
+def best_move(b):
+    best, move = -math.inf, None
+    for i in range(3):
+        for j in range(3):
+            if b[i][j]==" ":
+                b[i][j] = 'O'
+                val = minimax(b, False); b[i][j] = " "
+                if val>best: best, move = val, (i,j)
+    return move
+
+def play():
+    b = [[" "]*3 for _ in range(3)]
+    print_board(b)
+    while moves_left(b) and not evaluate(b):
+        r,c = map(int,input("Enter row col (0-2) for X: ").split())
+        if b[r][c]!=" ": print("Occupied!"); continue
+        b[r][c]='X'; print_board(b)
+        if evaluate(b)==-10: print("X wins!"); return
+        if not moves_left(b): print("Tie!"); return
+        r,c=best_move(b); b[r][c]='O'; print("Computer move:"); print_board(b)
+        if evaluate(b)==10: print("O wins!"); return
+    print("Tie!")
+
+if __name__=="__main__": play()
+o/p
+  |   |  
+---------
+  |   |  
+---------
+  |   |  
+Enter row col (0-2) for X: 0 0
+X |   |  
+---------
+  |   |  
+---------
+  |   |  
+Computer move:
+X |   |  
+---------
+  | O |  
+---------
+  |   |  
+Enter row col (0-2) for X: 1 1
+X |   |  
+---------
+  | X |  
+---------
+  |   |  
+Computer move:
+X |   |  
+---------
+  | X |  
+---------
+O |   |  
+Enter row col (0-2) for X: 0 2
+X |   | X
+---------
+  | X |  
+---------
+O |   |  
+Computer move:
+X | O | X
+---------
+  | X |  
+---------
+O |   |  
+Enter row col (0-2) for X: 0 1
+X | X | X
+---------
+  | X |  
+---------
+O |   |  
+X wins!
